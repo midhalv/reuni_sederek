@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Agenda Reuni SEDEREK</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7f8;
+}
+
+.header{
+background:linear-gradient(135deg,#00695c,#00897b);
+color:white;
+text-align:center;
+padding:25px;
+}
+
+.top-bar{
+display:flex;
+justify-content:flex-end;
+padding:15px;
+}
+
+.back-btn{
+text-decoration:none;
+background:#00695c;
+color:white;
+padding:10px 15px;
+border-radius:10px;
+font-weight:bold;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.card h3{
+margin-bottom:15px;
+color:#00695c;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#00695c;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+.total{
+margin-top:15px;
+padding:15px;
+background:#e8f5e9;
+border-radius:10px;
+font-weight:bold;
+text-align:center;
+color:#00695c;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>📅 Agenda Reuni</h1>
+<p>Keluarga SEDEREK</p>
+</div>
+
+<div class="top-bar">
+<a href="index.html" class="back-btn">
+kembali
+</a>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h3>📋 Informasi Reuni</h3>
+
+<table>
+
+<tr>
+<td>🏠 Tuan Rumah</td>
+<td id="tuanRumah">
+Menunggu Sekretaris
+</td>
+</tr>
+
+<tr>
+<td>📅 Tanggal</td>
+<td id="tanggalReuni">
+Menunggu Sekretaris
+</td>
+</tr>
+
+<tr>
+<td>📌 Keterangan</td>
+<td id="keteranganReuni">
+Menunggu Sekretaris
+</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h3>📅 Jadwal Bulan Ini</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Agenda</th>
+</tr>
+</thead>
+
+<tbody id="jadwalBulanIni">
+
+<tr>
+<td colspan="2">
+Belum ada jadwal
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h3>📅 Jadwal Bulan Selanjutnya</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Agenda</th>
+</tr>
+</thead>
+
+<tbody id="jadwalBulanDepan">
+
+<tr>
+<td colspan="2">
+Belum ada jadwal
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h3>💰 Rekap Dana</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Keterangan</th>
+<th>Nominal</th>
+</tr>
+</thead>
+
+<tbody id="rekapDana">
+
+<tr>
+<td colspan="2">
+Belum ada data
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<div
+class="total"
+id="totalDana">
+
+Total Saldo :
+Rp 0
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("tuanRumah")
+.innerText =
+localStorage.getItem("tuanRumah")
+|| "Menunggu Sekretaris";
+
+document.getElementById("tanggalReuni")
+.innerText =
+localStorage.getItem("tanggalReuni")
+|| "Menunggu Sekretaris";
+
+document.getElementById("keteranganReuni")
+.innerText =
+localStorage.getItem("keteranganReuni")
+|| "Menunggu Sekretaris";
+
+</script>
+
+</body>
+</html>
+```

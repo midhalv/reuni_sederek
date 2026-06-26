@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kesan & Pesan SEDEREK</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7f8;
+}
+
+.header{
+background:linear-gradient(135deg,#00695c,#00897b);
+color:white;
+text-align:center;
+padding:25px;
+}
+
+.top-bar{
+display:flex;
+justify-content:flex-end;
+padding:15px;
+}
+
+.back-btn{
+text-decoration:none;
+background:#00695c;
+color:white;
+padding:10px 15px;
+border-radius:10px;
+font-weight:bold;
+}
+
+.container{
+padding:15px;
+}
+
+.info-box{
+background:white;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.info-box h3{
+text-align:center;
+color:#00695c;
+margin-bottom:15px;
+}
+
+.info-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.info-table td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+.info-table td:first-child{
+font-weight:bold;
+color:#00695c;
+width:40%;
+}
+
+.form-box{
+background:white;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+textarea{
+height:120px;
+resize:none;
+}
+
+.kirim-btn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#00695c;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.list{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+animation:muncul .4s ease;
+}
+
+.nama{
+font-weight:bold;
+color:#00695c;
+margin-bottom:10px;
+}
+
+.pesan{
+margin-bottom:10px;
+line-height:1.6;
+}
+
+.sisa{
+font-size:12px;
+color:#777;
+margin-bottom:10px;
+}
+
+.edit-btn{
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#2196f3;
+color:white;
+margin-bottom:5px;
+cursor:pointer;
+}
+
+.hapus-btn{
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#d32f2f;
+color:white;
+cursor:pointer;
+}
+
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#4caf50;
+color:white;
+padding:12px 20px;
+border-radius:30px;
+opacity:0;
+transition:.3s;
+z-index:9999;
+}
+
+@keyframes muncul{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>💬 Kesan & Pesan</h1>
+<p>Reuni Keluarga SEDEREK</p>
+</div>
+
+<div class="top-bar">
+<a href="index.html" class="back-btn">
+kembali
+</a>
+</div>
+
+<div class="container">
+
+<div class="info-box">
+
+<h3>📋 Informasi Reuni</h3>
+
+<table class="info-table">
+
+<tr>
+<td>🏠 Tuan Rumah</td>
+<td id="tuanRumah">
+Menunggu Sekretaris
+</td>
+</tr>
+
+<tr>
+<td>📅 Tanggal</td>
+<td id="tanggalReuni">
+Menunggu Sekretaris
+</td>
+</tr>
+
+<tr>
+<td>📋 Keterangan</td>
+<td id="keteranganReuni">
+Menunggu Sekretaris
+</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="form-box">
+
+<input
+type="text"
+id="nama"
+placeholder="Nama Anda">
+
+<textarea
+id="pesan"
+placeholder="Tuliskan kesan dan pesan..."></textarea>
+
+<button
+class="kirim-btn"
+onclick="kirimPesan()">
+📨 Kirim Kesan & Pesan
+</button>
+
+</div>
+
+<div
+class="list"
+id="listPesan">
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+document.getElementById("tuanRumah").innerText =
+localStorage.getItem("tuanRumah")
+|| "Menunggu Sekretaris";
+
+document.getElementById("tanggalReuni").innerText =
+localStorage.getItem("tanggalReuni")
+|| "Menunggu Sekretaris";
+
+document.getElementById("keteranganReuni").innerText =
+localStorage.getItem("keteranganReuni")
+|| "Menunggu Sekretaris";
+
+function toast(teks){
+
+let t =
+document.getElementById("toast");
+
+t.innerHTML = teks;
+t.style.opacity = "1";
+
+setTimeout(()=>{
+t.style.opacity = "0";
+},2500);
+
+}
+
+function kirimPesan(){
+
+let nama =
+document.getElementById("nama").value.trim();
+
+let pesan =
+document.getElementById("pesan").value.trim();
+
+if(!nama || !pesan){
+
+toast("⚠️ Lengkapi data");
+
+return;
+
+}
+
+let editSisa = 3;
+
+let card =
+document.createElement("div");
+
+card.className = "card";
+
+card.innerHTML = `
+
+<div class="nama">
+👤 ${nama}
+</div>
+
+<div class="pesan">
+${pesan}
+</div>
+
+<div class="sisa">
+Sisa Edit: <span>3</span>x
+</div>
+
+<button class="edit-btn">
+✏️ Edit
+</button>
+
+<button class="hapus-btn">
+🗑️ Hapus
+</button>
+
+`;
+
+card.querySelector(".edit-btn")
+.onclick = function(){
+
+if(editSisa <= 0){
+
+toast("❌ Batas edit habis");
+
+return;
+
+}
+
+let pesanBox =
+card.querySelector(".pesan");
+
+let isi =
+pesanBox.innerText;
+
+pesanBox.innerHTML =
+`<textarea class="editArea">${isi}</textarea>`;
+
+let area =
+pesanBox.querySelector("textarea");
+
+area.focus();
+
+area.onblur = function(){
+
+pesanBox.innerHTML =
+area.value;
+
+editSisa--;
+
+card.querySelector(".sisa span")
+.innerText = editSisa;
+
+toast("✏️ Berhasil diperbarui");
+
+};
+
+};
+
+card.querySelector(".hapus-btn")
+.onclick = function(){
+
+card.remove();
+
+toast("🗑️ Pesan dihapus");
+
+};
+
+document
+.getElementById("listPesan")
+.prepend(card);
+
+document
+.getElementById("nama").value = "";
+
+document
+.getElementById("pesan").value = "";
+
+toast("✅ Kesan & pesan terkirim");
+
+}
+
+</script>
+
+</body>
+</html>

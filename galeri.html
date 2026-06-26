@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Galeri SEDEREK</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f7f8;
+}
+
+.header{
+    background:linear-gradient(135deg,#00695c,#00897b);
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:flex-end;
+    padding:15px;
+}
+
+.back-btn{
+    text-decoration:none;
+    background:#00695c;
+    color:white;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.container{
+    padding:15px;
+}
+
+.upload-box{
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+.upload-box h3{
+    color:#00695c;
+    margin-bottom:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.upload-btn{
+    width:100%;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    background:#00695c;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    animation:muncul .4s ease;
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.nama{
+    text-align:center;
+    padding:10px;
+    font-weight:bold;
+    color:#00695c;
+}
+
+.edit-btn{
+    width:100%;
+    border:none;
+    background:#2196f3;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+}
+
+.hapus-btn{
+    width:100%;
+    border:none;
+    background:#d32f2f;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+}
+
+.drive{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    background:#1a73e8;
+    color:white;
+    padding:10px;
+}
+
+#toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#4caf50;
+    color:white;
+    padding:12px 20px;
+    border-radius:30px;
+    font-weight:bold;
+    opacity:0;
+    transition:.3s;
+    z-index:9999;
+}
+
+@keyframes muncul{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📸 Galeri SEDEREK</h1>
+    <p>Album Reuni Keluarga</p>
+</div>
+
+<div class="top-bar">
+    <a href="index.html" class="back-btn">
+     Kembali
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="upload-box">
+
+        <h3>Upload Foto Reuni</h3>
+
+        <input
+            type="text"
+            id="nama"
+            placeholder="Nama Pengirim">
+
+        <input
+            type="file"
+            id="foto"
+            accept="image/*">
+
+        <button
+            class="upload-btn"
+            onclick="uploadFoto()">
+            📤 Upload Foto
+        </button>
+
+    </div>
+
+    <div class="gallery" id="gallery"></div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+function showToast(pesan){
+
+    const toast =
+    document.getElementById("toast");
+
+    toast.innerHTML = pesan;
+    toast.style.opacity = "1";
+
+    setTimeout(function(){
+
+        toast.style.opacity = "0";
+
+    },2500);
+
+}
+
+function uploadFoto(){
+
+    let nama =
+    document.getElementById("nama").value;
+
+    let file =
+    document.getElementById("foto").files[0];
+
+    if(!nama || !file){
+
+        showToast("⚠️ Isi nama dan pilih foto.");
+
+        return;
+    }
+
+    let reader =
+    new FileReader();
+
+    reader.onload =
+    function(e){
+
+        let card =
+        document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+        <img src="${e.target.result}">
+
+        <div class="nama">
+            👤 ${nama}
+        </div>
+
+        <button class="edit-btn">
+            ✏️ Edit Nama
+        </button>
+
+        <button class="hapus-btn">
+            🗑️ Hapus
+        </button>
+
+        <a class="drive"
+           href="https://drive.google.com/drive/folders/1r8Jwlds7m1dV2i1hmJpb1ardxG_1k6MW"
+           target="_blank">
+           ☁️ Buka Google Drive
+        </a>
+
+        `;
+
+        // HAPUS TANPA PAGE SAYS
+        card.querySelector(".hapus-btn")
+        .onclick = function(){
+
+            card.remove();
+
+            showToast("🗑️ Foto berhasil dihapus");
+
+        };
+
+        // EDIT TANPA PAGE SAYS
+        card.querySelector(".edit-btn")
+        .onclick = function(){
+
+            let namaBox =
+            card.querySelector(".nama");
+
+            let namaSekarang =
+            namaBox.innerText.replace("👤 ","");
+
+            namaBox.innerHTML = `
+            <input
+                type="text"
+                class="edit-input"
+                value="${namaSekarang}"
+                style="
+                width:90%;
+                padding:8px;
+                border-radius:8px;
+                border:1px solid #ccc;
+                text-align:center;
+                ">
+            `;
+
+            const input =
+            namaBox.querySelector("input");
+
+            input.focus();
+
+            input.onblur = function(){
+
+                let hasil =
+                input.value.trim();
+
+                if(hasil==""){
+
+                    hasil =
+                    namaSekarang;
+
+                }
+
+                namaBox.innerHTML =
+                "👤 " + hasil;
+
+                showToast("✏️ Nama berhasil diubah");
+
+            };
+
+        };
+
+        document
+        .getElementById("gallery")
+        .appendChild(card);
+
+        document.getElementById("nama").value = "";
+        document.getElementById("foto").value = "";
+
+        showToast("✅ Foto berhasil ditambahkan!");
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+</script>
